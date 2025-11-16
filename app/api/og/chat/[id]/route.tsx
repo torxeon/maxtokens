@@ -6,6 +6,9 @@ import fs from 'fs';
 import path from 'path';
 import { SciraLogo } from '@/components/logos/scira-logo';
 
+// Force dynamic rendering - this route requires runtime data and database access
+export const dynamic = 'force-dynamic';
+
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Get chat data with user information

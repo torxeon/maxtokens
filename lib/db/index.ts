@@ -5,15 +5,17 @@ import { serverEnv } from '@/env/server';
 import { upstashCache } from 'drizzle-orm/cache/upstash';
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(serverEnv.DATABASE_URL);
-const sqlread1 = neon(process.env.READ_DB_1!);
-const sqlread2 = neon(process.env.READ_DB_2!);
+// Use a placeholder during build time to avoid errors
+// The actual connection will be established at runtime when DATABASE_URL is available
+const sql = neon(serverEnv.DATABASE_URL || 'postgresql://placeholder');
+const sqlread1 = neon(process.env.READ_DB_1 || 'postgresql://placeholder');
+const sqlread2 = neon(process.env.READ_DB_2 || 'postgresql://placeholder');
 
 export const maindb = drizzle(sql, {
   schema,
   cache: upstashCache({
-    url: serverEnv.UPSTASH_REDIS_REST_URL,
-    token: serverEnv.UPSTASH_REDIS_REST_TOKEN,
+    url: serverEnv.UPSTASH_REDIS_REST_URL || 'https://placeholder.upstash.io',
+    token: serverEnv.UPSTASH_REDIS_REST_TOKEN || 'placeholder_token',
     global: true,
     config: { ex: 600 },
   }),
@@ -22,8 +24,8 @@ export const maindb = drizzle(sql, {
 const dbread1 = drizzle(sqlread1, {
   schema,
   cache: upstashCache({
-    url: serverEnv.UPSTASH_REDIS_REST_URL,
-    token: serverEnv.UPSTASH_REDIS_REST_TOKEN,
+    url: serverEnv.UPSTASH_REDIS_REST_URL || 'https://placeholder.upstash.io',
+    token: serverEnv.UPSTASH_REDIS_REST_TOKEN || 'placeholder_token',
     global: true,
     config: { ex: 600 },
   }),
@@ -32,8 +34,8 @@ const dbread1 = drizzle(sqlread1, {
 const dbread2 = drizzle(sqlread2, {
   schema,
   cache: upstashCache({
-    url: serverEnv.UPSTASH_REDIS_REST_URL,
-    token: serverEnv.UPSTASH_REDIS_REST_TOKEN,
+    url: serverEnv.UPSTASH_REDIS_REST_URL || 'https://placeholder.upstash.io',
+    token: serverEnv.UPSTASH_REDIS_REST_TOKEN || 'placeholder_token',
     global: true,
     config: { ex: 600 },
   }),
