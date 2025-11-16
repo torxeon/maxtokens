@@ -43,4 +43,7 @@ export const serverEnv = createEnv({
     ALLOWED_ORIGINS: z.string().optional().default('http://localhost:3000'),
   },
   experimental__runtimeEnv: process.env,
+  // Skip validation during build time (e.g., in Docker builds on Railway)
+  // Environment variables will be validated at runtime when the app starts
+  skipValidation: process.env.SKIP_ENV_VALIDATION === 'true',
 });
