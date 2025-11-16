@@ -9,4 +9,7 @@ export const clientEnv = createEnv({
   runtimeEnv: {
     NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   },
+  // Skip validation during build time (e.g., in Docker builds on Railway)
+  // Environment variables will be validated at runtime when the app starts
+  skipValidation: process.env.SKIP_ENV_VALIDATION === 'true',
 });
